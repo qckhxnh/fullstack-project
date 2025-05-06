@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken')
 exports.register = async (req, res) => {
   try {
     const { name, email, password, role, location } = req.body
-    const profilePic = req.file ? req.file.filename : ''
+    const profilePic = req.file ? req.file.filename : req.body.profilePic || ''
 
     const existing = await User.findOne({ email })
     if (existing)
