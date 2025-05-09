@@ -5,6 +5,8 @@ const cors = require('cors')
 const path = require('path')
 const homestayRoutes = require('./routes/homestay')
 const bookingRoutes = require('./routes/booking')
+const messageRoutes = require('./routes/message')
+const errorHandler = require('./middleware/errorHandler')
 
 // Load env vars
 dotenv.config()
@@ -16,12 +18,14 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
+app.use(errorHandler)
 
 // Routes
 const authRoutes = require('./routes/auth')
 app.use('/api/auth', authRoutes)
 app.use('/api/homestays', homestayRoutes)
 app.use('/api/bookings', bookingRoutes)
+app.use('/api/messages', messageRoutes)
 
 // Default route
 app.get('/', (req, res) => {

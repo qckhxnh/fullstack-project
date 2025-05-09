@@ -1,5 +1,8 @@
 const Homestay = require('../models/Homestay')
-
+const Booking = require('../models/Booking')
+const Message = require('../models/Message')
+// test git again
+// CREATE
 exports.createHomestay = async (req, res) => {
   try {
     const { title, location, description, price, availability, imageUrls } =
@@ -8,7 +11,6 @@ exports.createHomestay = async (req, res) => {
     const uploadedImages = req.files
       ? req.files.map((file) => file.filename)
       : []
-
     const parsedUrls = Array.isArray(imageUrls)
       ? imageUrls
       : imageUrls
@@ -40,6 +42,7 @@ exports.createHomestay = async (req, res) => {
   }
 }
 
+// GET ALL
 exports.getAllHomestays = async (req, res) => {
   try {
     const homes = await Homestay.find().populate(
@@ -54,7 +57,7 @@ exports.getAllHomestays = async (req, res) => {
   }
 }
 
-// GET /:id
+// GET BY ID
 exports.getHomestayById = async (req, res) => {
   try {
     const home = await Homestay.findById(req.params.id).populate(
@@ -70,7 +73,7 @@ exports.getHomestayById = async (req, res) => {
   }
 }
 
-// PUT /:id
+// UPDATE
 exports.updateHomestay = async (req, res) => {
   try {
     const { title, location, description, price, availability, imageUrls } =
@@ -79,10 +82,11 @@ exports.updateHomestay = async (req, res) => {
     const homestay = await Homestay.findById(req.params.id)
     if (!homestay)
       return res.status(404).json({ message: 'Homestay not found' })
+
     if (homestay.owner.toString() !== req.user.id) {
       return res
         .status(403)
-        .json({ message: 'Unauthorized to edit this homestay' })
+        .json({ message: 'You are not the owner of this homestay' })
     }
 
     const uploadedImages = req.files
@@ -115,19 +119,27 @@ exports.updateHomestay = async (req, res) => {
   }
 }
 
-// DELETE /:id
+// DELETE
 exports.deleteHomestay = async (req, res) => {
   try {
     const homestay = await Homestay.findById(req.params.id)
     if (!homestay)
       return res.status(404).json({ message: 'Homestay not found' })
+
     if (homestay.owner.toString() !== req.user.id) {
       return res
         .status(403)
-        .json({ message: 'Unauthorized to delete this homestay' })
+        .json({ message: 'You are not the owner of this homestay' })
     }
 
+    const bookingIds = await Booking.find({ homestay: homestay._id }).distinct(
+      '_id'
+    )
+
+    await Booking.deleteMany({ homestay: homestay._id })
+    await Message.deleteMany({ booking: { $in: bookingIds } })
     await homestay.deleteOne()
+
     res.status(200).json({ message: 'Homestay deleted successfully' })
   } catch (err) {
     res
