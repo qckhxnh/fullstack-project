@@ -9,6 +9,7 @@ const {
   getHomestayById,
   updateHomestay,
   deleteHomestay,
+  getMyListings,
 } = require('../controllers/homestayController')
 
 // 👇 Host only
@@ -31,5 +32,6 @@ router.delete('/:id', auth, roleCheck('host'), deleteHomestay)
 
 router.get('/', getAllHomestays)
 router.get('/:id', getHomestayById)
+router.get('/my', auth, getMyListings)
 
 module.exports = router
