@@ -63,3 +63,13 @@ exports.getHostBookings = async (req, res) => {
       .json({ message: 'Error fetching host bookings', error: err.message })
   }
 }
+
+exports.getBookingsByHomestay = async (req, res) => {
+  try {
+    const bookings = await Booking.find({ homestay: req.params.id })
+    res.status(200).json(bookings)
+  } catch (err) {
+    console.error('Error fetching bookings for homestay:', err)
+    res.status(500).json({ message: 'Failed to fetch bookings' })
+  }
+}
