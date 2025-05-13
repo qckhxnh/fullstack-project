@@ -61,17 +61,22 @@ function HomestayDetail() {
     }
   }
 
-  if (!home) return <div className="p-10 text-center">Loading...</div>
+  if (!home)
+    return (
+      <div className="p-10 text-center text-gray-800 dark:text-gray-100">
+        Loading...
+      </div>
+    )
 
   const img = home.images[0]?.startsWith('http')
     ? home.images[0]
     : `http://localhost:3001/uploads/${home.images[0]}`
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
+    <div className="max-w-4xl mx-auto mt-6 p-6 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-lg shadow-md">
       <button
         onClick={() => navigate(-1)}
-        className="mb-4 px-4 py-2 bg-gray-300 text-sm rounded hover:bg-gray-400"
+        className="mb-4 px-4 py-2 bg-gray-300 dark:bg-gray-700 text-sm text-gray-800 dark:text-gray-100 rounded hover:bg-gray-400 dark:hover:bg-gray-600"
       >
         ← Back
       </button>
@@ -81,10 +86,16 @@ function HomestayDetail() {
         alt={home.title}
         className="w-full h-64 object-cover rounded mb-6"
       />
-      <h1 className="text-3xl font-bold mb-2">{home.title}</h1>
-      <p className="text-gray-600 mb-2">{home.location}</p>
-      <p className="mb-4">{home.description}</p>
-      <p className="text-xl font-semibold mb-6">${home.price} / night</p>
+      <h1 className="text-3xl font-bold mb-2 text-gray-900 dark:text-white">
+        {home.title}
+      </h1>
+      <p className="text-gray-600 dark:text-gray-300">{home.location}</p>
+      <p className="mb-4 text-gray-800 dark:text-gray-200">
+        {home.description}
+      </p>
+      <p className="text-xl font-semibold mb-6 text-blue-600 dark:text-blue-400">
+        ${home.price} / night
+      </p>
 
       <form onSubmit={handleBooking} className="space-y-4 max-w-md">
         <h3 className="text-lg font-semibold">Book this homestay</h3>
@@ -97,7 +108,7 @@ function HomestayDetail() {
             excludeDates={bookedDates}
             minDate={new Date()}
             placeholderText="Select start date"
-            className="w-full border p-2 rounded"
+            className="w-full border p-2 rounded bg-white dark:bg-gray-900 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600"
           />
         </div>
 
@@ -109,13 +120,13 @@ function HomestayDetail() {
             excludeDates={bookedDates}
             minDate={startDate || new Date()}
             placeholderText="Select end date"
-            className="w-full border p-2 rounded"
+            className="w-full border p-2 rounded bg-white dark:bg-gray-900 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600"
           />
         </div>
 
         <button
           type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded"
+          className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-4 py-2 rounded transition"
         >
           Book Now
         </button>
