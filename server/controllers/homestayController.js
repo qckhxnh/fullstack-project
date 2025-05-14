@@ -148,11 +148,13 @@ exports.deleteHomestay = async (req, res) => {
   }
 }
 
-exports.getMyListings = async (req, res) => {
+exports.getMyHomestays = async (req, res) => {
   try {
-    const listings = await Homestay.find({ owner: req.user.id })
-    res.status(200).json(listings)
+    const homes = await Homestay.find({ owner: req.user.id })
+    res.status(200).json(homes)
   } catch (err) {
-    res.status(500).json({ message: 'Failed to fetch listings' })
+    res
+      .status(500)
+      .json({ message: 'Failed to fetch your listings', error: err.message })
   }
 }

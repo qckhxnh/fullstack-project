@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
 import axios from '../api/axios'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 function Home() {
   const [homes, setHomes] = useState([])
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchHomes = async () => {
@@ -11,7 +12,7 @@ function Home() {
         const res = await axios.get('/homestays')
         setHomes(res.data)
       } catch (err) {
-        console.error(err)
+        console.error('Failed to fetch homestays:', err)
       }
     }
 
@@ -20,14 +21,23 @@ function Home() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-10">
-      <h1 className="text-3xl font-bold mb-6 text-gray-900 dark:text-gray-100">
-        Explore Homestays
-      </h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+          Explore Homestays
+        </h1>
+        <button
+          onClick={() => navigate('/create-homestay')}
+          className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-4 py-2 rounded"
+        >
+          + Add Homestay
+        </button>
+      </div>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {homes.map((home) => (
           <Link
-            to={`/homestays/${home._id}`}
             key={home._id}
+            to={`/homestays/${home._id}`}
             className="border rounded-lg p-4 hover:shadow-md transition bg-white dark:bg-gray-800 dark:border-gray-700"
           >
             <img
