@@ -2,21 +2,29 @@ const express = require('express')
 const mongoose = require('mongoose')
 const dotenv = require('dotenv')
 const cors = require('cors')
+const path = require('path')
 
+// Load env vars
 dotenv.config()
+
+// App init
 const app = express()
 
 // Middleware
 app.use(cors())
 app.use(express.json())
-app.use('/uploads', express.static('uploads'))
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 
-// Basic route
+// Routes
+const authRoutes = require('./routes/auth')
+app.use('/api/auth', authRoutes)
+
+// Default route
 app.get('/', (req, res) => {
   res.send('StayMate Backend is running!')
 })
 
-// Connect to MongoDB and start server
+// DB connection and server start
 const PORT = process.env.PORT || 6000
 mongoose
   .connect(process.env.MONGO_URL, {})
