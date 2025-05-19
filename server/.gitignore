@@ -1,0 +1,35 @@
+# Node modules
+node_modules/
+
+# Environment variables
+.env
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Uploads
+uploads/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor folders and settings
+.vscode/
+.idea/
+*.swp
+
+# Optional: coverage reports (if using testing frameworks)
+coverage/
+
+# Optional: ignore build artifacts (if using Babel or TypeScript)
+dist/
+build/
+
+# Debug files
+*.pid
+*.seed
