@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const dotenv = require('dotenv')
 const cors = require('cors')
 const path = require('path')
+const homestayRoutes = require('./routes/homestay')
 
 // Load env vars
 dotenv.config()
@@ -18,6 +19,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 // Routes
 const authRoutes = require('./routes/auth')
 app.use('/api/auth', authRoutes)
+app.use('/api/homestays', homestayRoutes)
 
 // Default route
 app.get('/', (req, res) => {
