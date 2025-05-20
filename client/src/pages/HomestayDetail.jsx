@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import axios from '../api/axios'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
+import toast from 'react-hot-toast'
 
 function HomestayDetail() {
   const navigate = useNavigate()
@@ -47,7 +48,7 @@ function HomestayDetail() {
 
   const handleBooking = async (e) => {
     e.preventDefault()
-    if (!startDate || !endDate) return alert('Choose both dates')
+    if (!startDate || !endDate) return toast.error('Choose both dates')
 
     try {
       await axios.post('/bookings', {
@@ -55,9 +56,9 @@ function HomestayDetail() {
         startDate,
         endDate,
       })
-      alert('Booking successful!')
+      toast.success('Booking successful!')
     } catch (err) {
-      alert(err.response?.data?.message || 'Booking failed')
+      toast.error(err.response?.data?.message || 'Booking failed')
     }
   }
 

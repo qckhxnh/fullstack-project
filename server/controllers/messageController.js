@@ -1,17 +1,63 @@
-const Message = require('../models/Message')
+const Conversation = require('../models/Conversation')
+
+exports.getMessages = async (req, res) => {
+  try {
+    const { bookingId } = req.params
+
+    const conversation = await Conversation.findOne({ bookingId })
+
+    if (!conversation) {
+      return res.status(404).json({ message: 'Conversation not found' })
+    }
+
+    const isParticipant = [
+      conversation.hostId.toString(),
+      conversation.renterId.toString(),
+    ].includes(req.user.id)
+    if (!isParticipant) {
+      return res
+        .status(403)
+        .json({ message: 'Not authorized to view messages' })
+    }
+
+    res.status(200).json(conversation.messages)
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: 'Failed to fetch messages', error: err.message })
+  }
+}
 
 exports.sendMessage = async (req, res) => {
   try {
-    const { receiverId, bookingId, message } = req.body
+    const { bookingId, text } = req.body
 
-    const newMsg = await Message.create({
-      sender: req.user.id,
-      receiver: receiverId,
-      booking: bookingId || null,
-      message,
-    })
+    const conversation = await Conversation.findOne({ bookingId })
 
-    res.status(201).json(newMsg)
+    if (!conversation) {
+      return res.status(404).json({ message: 'Conversation not found' })
+    }
+
+    const isParticipant = [
+      conversation.hostId.toString(),
+      conversation.renterId.toString(),
+    ].includes(req.user.id)
+    if (!isParticipant) {
+      return res
+        .status(403)
+        .json({ message: 'Not authorized to send messages' })
+    }
+
+    const message = {
+      senderId: req.user.id,
+      text,
+      timestamp: new Date(),
+    }
+
+    conversation.messages.push(message)
+    await conversation.save()
+
+    res.status(201).json(message)
   } catch (err) {
     res
       .status(500)
@@ -19,21 +65,26 @@ exports.sendMessage = async (req, res) => {
   }
 }
 
-exports.getConversation = async (req, res) => {
+exports.getConversations = async (req, res) => {
   try {
-    const { userId } = req.params
+    const userId = req.user.id
 
-    const messages = await Message.find({
-      $or: [
-        { sender: req.user.id, receiver: userId },
-        { sender: userId, receiver: req.user.id },
-      ],
-    }).sort({ sentAt: 1 }) // chronological
+    const conversations = await Conversation.find({
+      $or: [{ hostId: userId }, { renterId: userId }],
+    })
+      .populate({
+        path: 'bookingId',
+        populate: {
+          path: 'homestay',
+          select: 'title images location',
+        },
+      })
+      .sort({ updatedAt: -1 })
 
-    res.status(200).json(messages)
+    res.status(200).json(conversations)
   } catch (err) {
     res
       .status(500)
-      .json({ message: 'Failed to fetch messages', error: err.message })
+      .json({ message: 'Failed to load conversations', error: err.message })
   }
 }

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import axios from '../api/axios'
 import 'react-datepicker/dist/react-datepicker.css'
 import { useNavigate } from 'react-router-dom'
+import toast from 'react-hot-toast'
 
 function CreateHomestay() {
   const navigate = useNavigate()
@@ -39,7 +40,6 @@ function CreateHomestay() {
       method: 'POST',
       body: data,
     })
-    console.log('Uploading to:', process.env.REACT_APP_CLOUDINARY_URL)
 
     const json = await res.json()
     return json.secure_url
@@ -50,7 +50,7 @@ function CreateHomestay() {
     setError('')
 
     if (!form.title || !form.location || !form.price) {
-      setError('Title, location, and price are required.')
+      toast.error('Title, location, and price are required.')
       return
     }
 
@@ -78,9 +78,11 @@ function CreateHomestay() {
           'Content-Type': 'multipart/form-data',
         },
       })
+
+      toast.success('Homestay created successfully!')
       navigate('/')
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to create homestay.')
+      toast.error(err.response?.data?.message || 'Failed to create homestay.')
     }
   }
 

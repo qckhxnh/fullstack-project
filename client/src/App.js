@@ -8,15 +8,35 @@ import MyBookings from './pages/MyBookings'
 import MyListings from './pages/MyListings'
 import Navbar from './components/Navbar'
 import CreateHomestay from './pages/CreateHomestay'
+import Chat from './pages/Chat'
+import Conversations from './pages/Conversations'
+import { Toaster } from 'react-hot-toast'
 
 function App() {
   return (
     <Router>
       <div className="min-h-screen bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors">
         <Navbar />
+        <Toaster position="top-center" reverseOrder={false} />
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route
+            path="/chat/:bookingId"
+            element={
+              <RequireAuth>
+                <Chat />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/conversations"
+            element={
+              <RequireAuth>
+                <Conversations />
+              </RequireAuth>
+            }
+          />
           <Route
             path="/create-homestay"
             element={

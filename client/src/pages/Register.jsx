@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import axios from '../api/axios'
 import { useNavigate } from 'react-router-dom'
+import toast from 'react-hot-toast'
 
 function Register() {
   const [form, setForm] = useState({
@@ -23,10 +24,10 @@ function Register() {
       )
 
       await axios.post('/auth/register', formData)
-      alert('Registered successfully!')
+      toast.success('Registered successfully!')
       navigate('/login')
     } catch (err) {
-      alert(err.response?.data?.message || 'Register failed')
+      toast.error(err.response?.data?.message || 'Register failed')
     }
   }
 

@@ -1,25 +1,25 @@
 import { useState } from 'react'
 import axios from '../api/axios'
 import { useNavigate } from 'react-router-dom'
+import toast from 'react-hot-toast'
 
 function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
   const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    setError('')
 
     try {
       const res = await axios.post('/auth/login', { email, password })
       localStorage.setItem('token', res.data.token)
+      toast.success('Login successful!')
       navigate('/')
     } catch (err) {
       const message =
         err.response?.data?.message || 'Invalid credentials. Please try again.'
-      setError(message)
+      toast.error(message)
     }
   }
 
@@ -31,12 +31,6 @@ function Login() {
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {error && (
-            <p className="bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-300 text-sm px-3 py-2 rounded">
-              {error}
-            </p>
-          )}
-
           <input
             type="email"
             value={email}
