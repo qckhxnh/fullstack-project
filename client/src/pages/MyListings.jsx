@@ -28,6 +28,8 @@ function MyListings() {
             onClick={async () => {
               toast.dismiss(t.id)
               try {
+                console.log('Delete request received for ID:', id)
+
                 await axios.delete(`/homestays/${id}`)
                 setHomes((prev) => prev.filter((h) => h._id !== id))
                 toast.success('Listing deleted!')

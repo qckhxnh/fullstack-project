@@ -12,6 +12,16 @@ function HomestayDetail() {
   const [bookedDates, setBookedDates] = useState([])
   const [startDate, setStartDate] = useState(null)
   const [endDate, setEndDate] = useState(null)
+  const [userId, setUserId] = useState(null)
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    if (token) {
+      const decoded = JSON.parse(atob(token.split('.')[1]))
+      setUserId(decoded.id)
+    }
+  }, [])
 
   useEffect(() => {
     const fetchHomestay = async () => {
@@ -49,7 +59,11 @@ function HomestayDetail() {
   const handleBooking = async (e) => {
     e.preventDefault()
     if (!startDate || !endDate) return toast.error('Choose both dates')
+    if (home?.owner?._id === userId) {
+      return toast.error('You cannot book your own homestay.')
+    }
 
+    setLoading(true)
     try {
       await axios.post('/bookings', {
         homestayId: id,
@@ -59,6 +73,8 @@ function HomestayDetail() {
       toast.success('Booking successful!')
     } catch (err) {
       toast.error(err.response?.data?.message || 'Booking failed')
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -108,8 +124,9 @@ function HomestayDetail() {
             onChange={(date) => setStartDate(date)}
             excludeDates={bookedDates}
             minDate={new Date()}
+            disabled={loading}
             placeholderText="Select start date"
-            className="w-full border p-2 rounded bg-white dark:bg-gray-900 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600"
+            className="w-full border p-2 rounded bg-white dark:bg-gray-900 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 disabled:opacity-50"
           />
         </div>
 
@@ -120,16 +137,41 @@ function HomestayDetail() {
             onChange={(date) => setEndDate(date)}
             excludeDates={bookedDates}
             minDate={startDate || new Date()}
+            disabled={loading}
             placeholderText="Select end date"
-            className="w-full border p-2 rounded bg-white dark:bg-gray-900 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600"
+            className="w-full border p-2 rounded bg-white dark:bg-gray-900 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 disabled:opacity-50"
           />
         </div>
 
         <button
           type="submit"
-          className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-4 py-2 rounded transition"
+          disabled={loading}
+          className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-4 py-2 rounded transition flex items-center justify-center disabled:opacity-50"
         >
-          Book Now
+          {loading ? (
+            <svg
+              className="animate-spin h-5 w-5 text-white"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              />
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+              />
+            </svg>
+          ) : (
+            'Book Now'
+          )}
         </button>
       </form>
     </div>

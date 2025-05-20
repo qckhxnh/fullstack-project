@@ -8,12 +8,14 @@ function Chat() {
   const [messages, setMessages] = useState([])
   const [text, setText] = useState('')
   const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
   const messagesEndRef = useRef(null)
 
   const sendMessage = async (e) => {
     e.preventDefault()
     if (!text.trim()) return
 
+    setLoading(true)
     try {
       const res = await axios.post('/messages', {
         bookingId,
@@ -21,8 +23,11 @@ function Chat() {
       })
       setMessages([...messages, res.data])
       setText('')
+      setError('')
     } catch (err) {
       setError('Failed to send message')
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -84,13 +89,38 @@ function Chat() {
           value={text}
           onChange={(e) => setText(e.target.value)}
           placeholder="Type a message..."
-          className="flex-1 p-2 border rounded bg-white dark:bg-gray-900 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600"
+          disabled={loading}
+          className="flex-1 p-2 border rounded bg-white dark:bg-gray-900 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 disabled:opacity-50"
         />
         <button
           type="submit"
-          className="px-4 py-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white rounded"
+          disabled={loading}
+          className="px-4 py-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white rounded flex items-center justify-center disabled:opacity-50"
         >
-          Send
+          {loading ? (
+            <svg
+              className="animate-spin h-5 w-5 text-white"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              />
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+              />
+            </svg>
+          ) : (
+            'Send'
+          )}
         </button>
       </form>
     </div>
