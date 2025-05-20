@@ -4,6 +4,7 @@ const dotenv = require('dotenv')
 const cors = require('cors')
 const path = require('path')
 const homestayRoutes = require('./routes/homestay')
+const bookingRoutes = require('./routes/booking')
 
 // Load env vars
 dotenv.config()
@@ -20,6 +21,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 const authRoutes = require('./routes/auth')
 app.use('/api/auth', authRoutes)
 app.use('/api/homestays', homestayRoutes)
+app.use('/api/bookings', bookingRoutes)
 
 // Default route
 app.get('/', (req, res) => {
