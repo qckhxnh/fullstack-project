@@ -1,7 +1,7 @@
 const Homestay = require('../models/Homestay')
 const Booking = require('../models/Booking')
 const Message = require('../models/Message')
-// test git
+// test git again
 // CREATE
 exports.createHomestay = async (req, res) => {
   try {
