@@ -1,12 +1,16 @@
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import axios from '../api/axios'
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
 
 function HomestayDetail() {
+  const navigate = useNavigate()
   const { id } = useParams()
   const [home, setHome] = useState(null)
-  const [startDate, setStartDate] = useState('')
-  const [endDate, setEndDate] = useState('')
+  const [bookedDates, setBookedDates] = useState([])
+  const [startDate, setStartDate] = useState(null)
+  const [endDate, setEndDate] = useState(null)
 
   useEffect(() => {
     const fetchHomestay = async () => {
@@ -18,31 +22,32 @@ function HomestayDetail() {
       }
     }
 
+    const fetchBookings = async () => {
+      try {
+        const res = await axios.get(`/bookings/homestay/${id}`)
+        const dates = []
+
+        res.data.forEach((booking) => {
+          const start = new Date(booking.startDate)
+          const end = new Date(booking.endDate)
+          for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+            dates.push(new Date(d))
+          }
+        })
+
+        setBookedDates(dates)
+      } catch (err) {
+        console.error('Failed to fetch bookings:', err)
+      }
+    }
+
     fetchHomestay()
+    fetchBookings()
   }, [id])
 
   const handleBooking = async (e) => {
     e.preventDefault()
     if (!startDate || !endDate) return alert('Choose both dates')
-
-    const start = new Date(startDate)
-    const end = new Date(endDate)
-
-    const requestedDates = []
-    for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-      requestedDates.push(new Date(d).toISOString().split('T')[0])
-    }
-
-    const availableDates = home.availability.map(
-      (d) => new Date(d).toISOString().split('T')[0]
-    )
-    const isAllAvailable = requestedDates.every((date) =>
-      availableDates.includes(date)
-    )
-
-    if (!isAllAvailable) {
-      return alert('One or more selected dates are not available.')
-    }
 
     try {
       await axios.post('/bookings', {
@@ -60,10 +65,17 @@ function HomestayDetail() {
 
   const img = home.images[0]?.startsWith('http')
     ? home.images[0]
-    : `http://localhost:3000/uploads/${home.images[0]}`
+    : `http://localhost:3001/uploads/${home.images[0]}`
 
   return (
     <div className="max-w-4xl mx-auto p-6">
+      <button
+        onClick={() => navigate(-1)}
+        className="mb-4 px-4 py-2 bg-gray-300 text-sm rounded hover:bg-gray-400"
+      >
+        ← Back
+      </button>
+
       <img
         src={img}
         alt={home.title}
@@ -74,37 +86,38 @@ function HomestayDetail() {
       <p className="mb-4">{home.description}</p>
       <p className="text-xl font-semibold mb-6">${home.price} / night</p>
 
-      <h2 className="font-medium mb-2">Available Dates:</h2>
-      <ul className="flex flex-wrap gap-2 text-sm mb-6">
-        {home.availability.map((date) => (
-          <li
-            key={date}
-            className="bg-green-100 text-green-800 px-2 py-1 rounded"
-          >
-            {new Date(date).toLocaleDateString()}
-          </li>
-        ))}
-      </ul>
-
       <form onSubmit={handleBooking} className="space-y-4 max-w-md">
-        <h3 className="text-lg font-semibold">Book Now</h3>
-        <input
-          type="date"
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
-          className="w-full border p-2 rounded"
-        />
-        <input
-          type="date"
-          value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
-          className="w-full border p-2 rounded"
-        />
+        <h3 className="text-lg font-semibold">Book this homestay</h3>
+
+        <div>
+          <label className="block mb-1 text-sm">Start Date</label>
+          <DatePicker
+            selected={startDate}
+            onChange={(date) => setStartDate(date)}
+            excludeDates={bookedDates}
+            minDate={new Date()}
+            placeholderText="Select start date"
+            className="w-full border p-2 rounded"
+          />
+        </div>
+
+        <div>
+          <label className="block mb-1 text-sm">End Date</label>
+          <DatePicker
+            selected={endDate}
+            onChange={(date) => setEndDate(date)}
+            excludeDates={bookedDates}
+            minDate={startDate || new Date()}
+            placeholderText="Select end date"
+            className="w-full border p-2 rounded"
+          />
+        </div>
+
         <button
           type="submit"
           className="bg-blue-600 text-white px-4 py-2 rounded"
         >
-          Book
+          Book Now
         </button>
       </form>
     </div>
