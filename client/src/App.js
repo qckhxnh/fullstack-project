@@ -1,4 +1,16 @@
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import Login from './pages/Login'
+import Register from './pages/Register'
+
 function App() {
-  return <h1 className="text-3xl font-bold text-blue-500">StayMate Frontend</h1>
+  return (
+    <Router>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+      </Routes>
+    </Router>
+  )
 }
+
 export default App
