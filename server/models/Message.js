@@ -16,7 +16,9 @@ const messageSchema = new mongoose.Schema(
       default: Date.now,
     },
   },
-  { _id: false }
+  {
+    _id: false,
+  }
 )
 
 module.exports = messageSchema

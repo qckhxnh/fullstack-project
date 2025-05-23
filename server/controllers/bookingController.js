@@ -86,7 +86,9 @@ exports.cancelBooking = async (req, res) => {
         .json({ message: 'Not authorized to cancel this booking' })
     }
 
+    await Conversation.deleteOne({ bookingId: booking._id })
     await booking.deleteOne()
+
     res.status(200).json({ message: 'Booking cancelled' })
   } catch (err) {
     res.status(500).json({ message: 'Failed to cancel booking' })

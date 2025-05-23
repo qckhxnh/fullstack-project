@@ -1,6 +1,7 @@
 const Homestay = require('../models/Homestay')
 const Booking = require('../models/Booking')
 const Message = require('../models/Message')
+const Conversation = require('../models/Conversation')
 // test git again
 // CREATE
 exports.createHomestay = async (req, res) => {
@@ -126,7 +127,12 @@ exports.deleteHomestay = async (req, res) => {
     if (!homestay)
       return res.status(404).json({ message: 'Homestay not found' })
 
-    if (homestay.owner.toString() !== req.user.id) {
+    const ownerId =
+      typeof homestay.owner === 'object'
+        ? homestay.owner.toString()
+        : homestay.owner
+
+    if (ownerId !== req.user.id) {
       return res
         .status(403)
         .json({ message: 'You are not the owner of this homestay' })
@@ -135,9 +141,10 @@ exports.deleteHomestay = async (req, res) => {
     const bookingIds = await Booking.find({ homestay: homestay._id }).distinct(
       '_id'
     )
+    const objectIds = bookingIds.map((id) => new mongoose.Types.ObjectId(id))
 
     await Booking.deleteMany({ homestay: homestay._id })
-    await Message.deleteMany({ booking: { $in: bookingIds } })
+    await Conversation.deleteMany({ bookingId: { $in: objectIds } })
     await homestay.deleteOne()
 
     res.status(200).json({ message: 'Homestay deleted successfully' })

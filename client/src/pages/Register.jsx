@@ -9,6 +9,7 @@ function Register() {
     email: '',
     password: '',
   })
+  const [loading, setLoading] = useState(false)
 
   const navigate = useNavigate()
 
@@ -17,6 +18,7 @@ function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setLoading(true)
     try {
       const formData = new FormData()
       Object.entries(form).forEach(([key, value]) =>
@@ -28,6 +30,8 @@ function Register() {
       navigate('/login')
     } catch (err) {
       toast.error(err.response?.data?.message || 'Register failed')
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -48,16 +52,18 @@ function Register() {
             value={form.name}
             onChange={handleChange}
             placeholder="Name"
-            className="w-full p-2 border rounded bg-white dark:bg-gray-900 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600"
             required
+            disabled={loading}
+            className="w-full p-2 border rounded bg-white dark:bg-gray-900 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 disabled:opacity-50"
           />
           <input
             name="email"
             value={form.email}
             onChange={handleChange}
             placeholder="Email"
-            className="w-full p-2 border rounded bg-white dark:bg-gray-900 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600"
             required
+            disabled={loading}
+            className="w-full p-2 border rounded bg-white dark:bg-gray-900 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 disabled:opacity-50"
           />
           <input
             name="password"
@@ -65,14 +71,39 @@ function Register() {
             onChange={handleChange}
             type="password"
             placeholder="Password"
-            className="w-full p-2 border rounded bg-white dark:bg-gray-900 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600"
             required
+            disabled={loading}
+            className="w-full p-2 border rounded bg-white dark:bg-gray-900 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 disabled:opacity-50"
           />
           <button
             type="submit"
-            className="w-full bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600 text-white px-4 py-2 rounded transition"
+            disabled={loading}
+            className="w-full bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600 text-white px-4 py-2 rounded transition flex items-center justify-center disabled:opacity-50"
           >
-            Register
+            {loading ? (
+              <svg
+                className="animate-spin h-5 w-5 text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                />
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                />
+              </svg>
+            ) : (
+              'Register'
+            )}
           </button>
         </form>
 
@@ -81,6 +112,7 @@ function Register() {
           <button
             type="button"
             onClick={() => navigate('/login')}
+            disabled={loading}
             className="text-blue-600 dark:text-blue-400 underline"
           >
             Login here

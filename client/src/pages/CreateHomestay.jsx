@@ -16,6 +16,7 @@ function CreateHomestay() {
   const [availability, setAvailability] = useState([])
   const [images, setImages] = useState([])
   const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const handleInputChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value })
@@ -48,9 +49,11 @@ function CreateHomestay() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
+    setLoading(true)
 
     if (!form.title || !form.location || !form.price) {
       toast.error('Title, location, and price are required.')
+      setLoading(false)
       return
     }
 
@@ -83,6 +86,8 @@ function CreateHomestay() {
       navigate('/')
     } catch (err) {
       toast.error(err.response?.data?.message || 'Failed to create homestay.')
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -102,14 +107,16 @@ function CreateHomestay() {
           placeholder="Title"
           value={form.title}
           onChange={handleInputChange}
-          className="w-full p-2 border rounded bg-white dark:bg-gray-900 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600"
+          disabled={loading}
+          className="w-full p-2 border rounded bg-white dark:bg-gray-900 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 disabled:opacity-50"
         />
         <input
           name="location"
           placeholder="Location"
           value={form.location}
           onChange={handleInputChange}
-          className="w-full p-2 border rounded bg-white dark:bg-gray-900 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600"
+          disabled={loading}
+          className="w-full p-2 border rounded bg-white dark:bg-gray-900 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 disabled:opacity-50"
         />
         <textarea
           name="description"
@@ -117,7 +124,8 @@ function CreateHomestay() {
           value={form.description}
           onChange={handleInputChange}
           rows={3}
-          className="w-full p-2 border rounded bg-white dark:bg-gray-900 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600"
+          disabled={loading}
+          className="w-full p-2 border rounded bg-white dark:bg-gray-900 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 disabled:opacity-50"
         />
         <input
           type="number"
@@ -125,7 +133,8 @@ function CreateHomestay() {
           placeholder="Price per night"
           value={form.price}
           onChange={handleInputChange}
-          className="w-full p-2 border rounded bg-white dark:bg-gray-900 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600"
+          disabled={loading}
+          className="w-full p-2 border rounded bg-white dark:bg-gray-900 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 disabled:opacity-50"
         />
 
         <label className="block text-sm font-semibold">Upload Images</label>
@@ -134,7 +143,8 @@ function CreateHomestay() {
           name="images"
           onChange={handleImageUpload}
           multiple
-          className="w-full text-sm"
+          disabled={loading}
+          className="w-full text-sm disabled:opacity-50"
         />
 
         <div className="flex flex-wrap gap-2 mt-2 text-sm">
@@ -151,9 +161,33 @@ function CreateHomestay() {
 
         <button
           type="submit"
-          className="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-4 py-2 rounded transition"
+          disabled={loading}
+          className="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-4 py-2 rounded transition flex items-center justify-center disabled:opacity-50"
         >
-          Create Homestay
+          {loading ? (
+            <svg
+              className="animate-spin h-5 w-5 text-white"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              />
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+              />
+            </svg>
+          ) : (
+            'Create Homestay'
+          )}
         </button>
       </form>
     </div>
