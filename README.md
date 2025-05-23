@@ -1,108 +1,202 @@
-# fullstack-project
-
 # StayMate
 
-## Description
+## 🌍 Description
 
-**StayMate** is a full-stack homestay booking platform developed using the MERN (MongoDB, Express, React, Node.js) stack. It allows users to register, list their own properties, book available homestays, and chat with hosts or renters. It showcases the complete development and integration of both frontend and backend systems.
+**StayMate** is a full-stack homestay booking platform built using the MERN stack (MongoDB, Express.js, React, Node.js). It enables users to:
 
-This project is structured into two main directories:
+- Create and manage listings
+- Book stays with availability calendars
+- Upload images from their own local device.
+- Chat with hosts/renters tied to each booking
+- Enjoy a clean, mobile-friendly interface with dark mode
 
-- **client**: React-based frontend.
-- **server**: Node.js and Express-based backend.
+> ✅ This project demonstrates full lifecycle development of a modern web app with secure authentication, cloud image uploads, and role-based access.
 
-## Table of Contents
+---
 
-- [fullstack-project](#fullstack-project)
-- [StayMate](#staymate)
-  - [Description](#description)
-  - [Table of Contents](#table-of-contents)
-  - [Installation](#installation)
-    - [Server `.env`](#server-env)
-    - [Client `.env`](#client-env)
-  - [Usage](#usage)
-    - [Start the Backend:](#start-the-backend)
-    - [Start the Frontend:](#start-the-frontend)
-  - [Implemented Features](#implemented-features)
-  - [Planned Features](#planned-features)
-  - [Known Bugs](#known-bugs)
-  - [Credits](#credits)
+### 🔗 Live Demo
 
-## Installation
+- 🖥️ Frontend: [Frontend Link!](https://staymate-client.onrender.com)
+- ⚙️ Backend: [Server Link](https://staymate-server-b263.onrender.com)
 
-To set up StayMate locally:
+### 🧪 Test Account
 
-1. Install **Node.js** and **npm**.
-2. Clone this repository.
-3. In both `client` and `server` folders, run `npm install`.
-4. Create `.env` files in both folders with the following settings:
+- **Email:** <testuseraccount@gmail.com>
+- **Password:** Pleasehavealook2025
 
-### Server `.env`
+---
 
+## 📚 User Instructions
+
+1. Sign up (or log in using the test account).
+2. As a host: create listings, upload image, set prices and availability.
+3. As a renter: browse listings, select dates, and book.
+4. Chat with the host from the bookings page.
+5. Access "My Listings" or "My Bookings" from the navigation bar.
+
+---
+
+## 🗂️ Table of Contents
+
+- [Installation](#installation)
+- [Usage](#usage)
+- [Implemented Features](#implemented-features)
+- [Planned Features](#planned-features)
+- [Known Bugs](#known-bugs)
+- [Work Hours Log](#work-hours-log)
+- [Credits](#credits)
+
+---
+
+## ⚙️ Installation
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/qckhxnh/fullstack-project.git
+cd fullstack-project
 ```
-MONGO_URL=<your_mongodb_connection_string>
+
+### 2. Install Dependencies
+
+```bash
+cd client && npm install
+cd ../server && npm install
+```
+
+### 3. Environment Variables
+
+#### server/.env
+
+```bash
+MONGO_URL=your_mongodb_url
 PORT=3001
-JWT_SECRET=<your_jwt_secret>
+JWT_SECRET=your_secret_key
 ```
 
-### Client `.env`
+#### client/.env
 
-```
+```bash
 REACT_APP_BACKEND_URL=http://localhost:3001
-REACT_APP_CLOUDINARY_UPLOAD_PRESET=<your_upload_preset>
-REACT_APP_CLOUDINARY_URL=https://api.cloudinary.com/v1_1/<your_cloud_name>/image/upload
+REACT_APP_CLOUDINARY_UPLOAD_PRESET=your_upload_preset
+REACT_APP_CLOUDINARY_URL=https://api.cloudinary.com/v1_1/your_cloud_name/image/upload
 ```
 
-## Usage
+---
 
-### Start the Backend:
+## ▶️ Usage
+
+Start the servers in two terminals:
+
+### Backend
 
 ```bash
 cd server
-npm start
+npm run dev
 ```
 
-### Start the Frontend:
+### Frontend
 
 ```bash
 cd client
 npm start
 ```
 
-The frontend runs on `http://localhost:3000` and communicates with the backend at `http://localhost:3001`.
-
-## Implemented Features
-
-- User registration and login with JWT authentication
-- Role management: users can list homestays and also book others’ listings
-- Create, edit, and delete homestay listings with image uploads via Cloudinary
-- Calendar-based availability selection
-- Booking system with date conflict checks
-- Messaging system between hosts and renters tied to bookings
-- Inbox page showing all conversations
-- Responsive, dark-mode enabled user interface using Tailwind CSS
-
-## Planned Features
-
-- Profile page with editable avatar and info
-- Booking history analytics and ratings
-- Admin panel for managing users and listings
-- Real-time messaging with WebSocket
-- Payment integration (Stripe/PayPal)
-
-## Known Bugs
-
-- No avatar image upload in registration (only default or none)
-- No notifications for new messages without refreshing
-
-## Credits
-
-- Inspired by common vacation rental platforms like Airbnb
-- Styled using Tailwind CSS and `react-hot-toast`
-- Backend tested with Postman; frontend tested in Chrome and Firefox
+- Open your browser at: [http://localhost:3000](http://localhost:3000)
 
 ---
 
-For any questions or contributions, feel free to open an issue or contact the maintainer.
+## ✅ Implemented Features
+
+- 🔐 JWT-based authentication
+- 🏡 Host listings: create, edit, delete with image uploads via Cloudinary
+- 📅 Availability selection with datepicker
+- 📖 Booking system with conflict prevention
+- 💬 Chat system tied to bookings
+- 📥 Inbox page for conversations
+- 🌙 Tailwind CSS styling + Dark mode
+- 📱 Responsive design for mobile/tablet
+- Create CI/CD pipline
 
 ---
+
+## 🧩 Planned Features
+
+- Editable user profile and avatar
+- Rating system for hosts/homestays
+- Stripe payment integration
+- Real-time messaging via Socket.io
+- Admin dashboard
+
+---
+
+## 🐞 Known Bugs
+
+- No avatar upload during signup
+- No real-time chat updates (requires refresh)
+
+---
+
+## ⏱️ Work Hours Log
+
+📄 Markdown version also available in [`WORKLOG.md`](./WORKLOG.md)
+
+| Date       | Hours   | Task Description                                                               |
+| ---------- | ------- | ------------------------------------------------------------------------------ |
+| 2025-05-01 | 3       | Project initialization, Git setup, and early README draft                      |
+| 2025-05-02 | 10      | Backend setup: Express server, MongoDB, routes, and dotenv configuration       |
+| 2025-05-04 | 10      | User authentication: registration, login, JWT handling, and profile logic      |
+| 2025-05-06 | 12      | Homestay model & CRUD operations; route protection and multer integration      |
+| 2025-05-07 | 8       | Booking functionality: create/view endpoints, availability logic, validation   |
+| 2025-05-09 | 12      | Messaging system backend, schema nesting, role checks, and controller setup    |
+| 2025-05-11 | 15      | React frontend: Home, HomestayDetail, dynamic routing, Tailwind UI integration |
+| 2025-05-14 | 10      | Booking frontend flow, RequireAuth, calendar picker, error handling            |
+| 2025-05-16 | 13      | Full chat UI implementation, auto-scroll, message send/display                 |
+| 2025-05-20 | 16      | Conversation list page, conversation routing, and access control               |
+| 2025-05-23 | 8       | CI/CD pipeline creation with GitHub Actions, deployment to Render, CORS        |
+
+## 📂 Repository Structure
+
+```bash
+fullstack-project/
+├── client/        # React frontend
+│   ├── src/
+│   └── .env
+├── server/        # Express backend
+│   ├── controllers/
+│   ├── models/
+│   ├── routes/
+│   └── .env
+```
+
+---
+
+## ✅ Good Practices Followed
+
+- Clear folder structure
+- No commented-out or unused code
+- `.env.example` included
+- Separate `client` and `server` folders
+- Clean and informative commit history
+- Markdown-based time log
+- Fully working demo app with sample credentials
+
+---
+
+## 🙌 Credits
+
+- Inspired by Airbnb UI
+- Hosted on Render
+
+---
+
+_For support or questions, please contact the project maintainer or open an issue._
+
+---
+
+Author's Note:
+This project, StayMate, was entirely designed and developed by me as an individual effort. Although GitHub shows another contributor in the commit history, this was an unintentional result of a credential misconfiguration during Git operations.
+
+I am the sole developer responsible for all planning, coding, UI/UX design, testing, and documentation.
+
+The mistakenly attributed contributor (e.g., shubh2294) was never involved in the development of this project.
