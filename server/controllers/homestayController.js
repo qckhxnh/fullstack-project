@@ -147,3 +147,12 @@ exports.deleteHomestay = async (req, res) => {
       .json({ message: 'Failed to delete homestay', error: err.message })
   }
 }
+
+exports.getMyListings = async (req, res) => {
+  try {
+    const listings = await Homestay.find({ owner: req.user.id })
+    res.status(200).json(listings)
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to fetch listings' })
+  }
+}

@@ -36,14 +36,12 @@ exports.createBooking = async (req, res) => {
 
 exports.getUserBookings = async (req, res) => {
   try {
-    const bookings = await Booking.find({ user: req.user.id }).populate(
-      'homestay'
-    )
+    const bookings = await Booking.find({ user: req.user.id })
+      .populate('homestay', 'title location images')
+      .sort({ startDate: 1 })
     res.status(200).json(bookings)
   } catch (err) {
-    res
-      .status(500)
-      .json({ message: 'Error fetching bookings', error: err.message })
+    res.status(500).json({ message: 'Failed to fetch bookings' })
   }
 }
 
@@ -71,5 +69,23 @@ exports.getBookingsByHomestay = async (req, res) => {
   } catch (err) {
     console.error('Error fetching bookings for homestay:', err)
     res.status(500).json({ message: 'Failed to fetch bookings' })
+  }
+}
+
+exports.cancelBooking = async (req, res) => {
+  try {
+    const booking = await Booking.findById(req.params.id)
+    if (!booking) return res.status(404).json({ message: 'Booking not found' })
+
+    if (booking.user.toString() !== req.user.id) {
+      return res
+        .status(403)
+        .json({ message: 'Not authorized to cancel this booking' })
+    }
+
+    await booking.deleteOne()
+    res.status(200).json({ message: 'Booking cancelled' })
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to cancel booking' })
   }
 }
