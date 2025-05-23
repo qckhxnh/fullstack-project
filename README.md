@@ -154,6 +154,9 @@ npm start
 | 2025-05-16 | 13      | Full chat UI implementation, auto-scroll, message send/display                 |
 | 2025-05-20 | 16      | Conversation list page, conversation routing, and access control               |
 | 2025-05-23 | 8       | CI/CD pipeline creation with GitHub Actions, deployment to Render, CORS        |
+| 2025-05-23 | 5       | Error state handling, 403/500 debugging, Postman tests                         |
+| 2025-05-23 | 3       | Enhanced README with live links, user guide, installation, and credits section |
+| **Total**  | **125** |                                                                                |
 
 ## 📂 Repository Structure
 
