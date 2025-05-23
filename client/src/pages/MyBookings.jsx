@@ -74,18 +74,28 @@ function MyBookings() {
 
   return (
     <div className="max-w-4xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-6">My Bookings</h1>
+      <h1 className="text-2xl font-bold mb-6 text-gray-900 dark:text-gray-100">
+        My Bookings
+      </h1>
 
-      <h2 className="text-lg font-semibold mb-2">Upcoming Bookings</h2>
+      <h2 className="text-lg font-semibold mb-2 text-gray-800 dark:text-gray-200">
+        Upcoming Bookings
+      </h2>
       {upcoming.length === 0 ? (
-        <p className="text-sm">No upcoming bookings.</p>
+        <p className="text-sm text-gray-600 dark:text-gray-400">
+          No upcoming bookings.
+        </p>
       ) : (
         <div className="space-y-4 mb-6">{upcoming.map(renderBookingCard)}</div>
       )}
 
-      <h2 className="text-lg font-semibold mb-2">Past Bookings</h2>
+      <h2 className="text-lg font-semibold mb-2 text-gray-800 dark:text-gray-200">
+        Past Bookings
+      </h2>
       {past.length === 0 ? (
-        <p className="text-sm">No past bookings.</p>
+        <p className="text-sm text-gray-600 dark:text-gray-400">
+          No past bookings.
+        </p>
       ) : (
         <div className="space-y-4">{past.map(renderBookingCard)}</div>
       )}

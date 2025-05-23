@@ -6,39 +6,43 @@ import HomestayDetail from './pages/HomestayDetail'
 import RequireAuth from './contexts/RequireAuth'
 import MyBookings from './pages/MyBookings'
 import MyListings from './pages/MyListings'
+import Navbar from './components/Navbar'
 
 function App() {
   return (
     <Router>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route
-          path="/"
-          element={
-            <RequireAuth>
-              <Home />
-            </RequireAuth>
-          }
-        />
-        <Route path="/homestays/:id" element={<HomestayDetail />} />
-        <Route
-          path="/my-bookings"
-          element={
-            <RequireAuth>
-              <MyBookings />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/my-listings"
-          element={
-            <RequireAuth>
-              <MyListings />
-            </RequireAuth>
-          }
-        />
-      </Routes>
+      <div className="min-h-screen bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors">
+        <Navbar />
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route
+            path="/"
+            element={
+              <RequireAuth>
+                <Home />
+              </RequireAuth>
+            }
+          />
+          <Route path="/homestays/:id" element={<HomestayDetail />} />
+          <Route
+            path="/my-bookings"
+            element={
+              <RequireAuth>
+                <MyBookings />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/my-listings"
+            element={
+              <RequireAuth>
+                <MyListings />
+              </RequireAuth>
+            }
+          />
+        </Routes>
+      </div>
     </Router>
   )
 }
