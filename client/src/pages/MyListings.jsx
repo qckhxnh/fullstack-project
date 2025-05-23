@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import axios from '../api/axios'
 import { Link } from 'react-router-dom'
+import toast from 'react-hot-toast'
 
 function MyListings() {
   const [homes, setHomes] = useState([])
@@ -19,14 +20,34 @@ function MyListings() {
   }, [])
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Delete this listing?')) return
-    try {
-      await axios.delete(`/homestays/${id}`)
-      setHomes(homes.filter((h) => h._id !== id))
-      alert('Listing deleted')
-    } catch (err) {
-      alert('Delete failed')
-    }
+    toast((t) => (
+      <span className="flex flex-col gap-2">
+        Delete this listing?
+        <div className="flex gap-4">
+          <button
+            onClick={async () => {
+              toast.dismiss(t.id)
+              try {
+                await axios.delete(`/homestays/${id}`)
+                setHomes((prev) => prev.filter((h) => h._id !== id))
+                toast.success('Listing deleted!')
+              } catch (err) {
+                toast.error('Delete failed')
+              }
+            }}
+            className="px-3 py-1 bg-red-600 text-white rounded"
+          >
+            Yes
+          </button>
+          <button
+            onClick={() => toast.dismiss(t.id)}
+            className="px-3 py-1 bg-gray-300 text-gray-800 rounded"
+          >
+            No
+          </button>
+        </div>
+      </span>
+    ))
   }
 
   return (

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import axios from '../api/axios'
 import { Link } from 'react-router-dom'
+import toast from 'react-hot-toast'
 
 function MyBookings() {
   const [bookings, setBookings] = useState([])
@@ -20,14 +21,34 @@ function MyBookings() {
   }, [refresh])
 
   const handleCancel = async (id) => {
-    if (!window.confirm('Are you sure you want to cancel this booking?')) return
-    try {
-      await axios.delete(`/bookings/${id}`)
-      alert('Booking cancelled')
-      setRefresh(!refresh)
-    } catch (err) {
-      alert('Failed to cancel booking')
-    }
+    toast((t) => (
+      <span className="flex flex-col gap-2">
+        Are you sure you want to cancel this booking?
+        <div className="flex gap-4">
+          <button
+            onClick={async () => {
+              toast.dismiss(t.id)
+              try {
+                await axios.delete(`/bookings/${id}`)
+                toast.success('Booking cancelled!')
+                setRefresh((prev) => !prev)
+              } catch (err) {
+                toast.error('Failed to cancel booking.')
+              }
+            }}
+            className="px-3 py-1 bg-red-600 text-white rounded"
+          >
+            Yes
+          </button>
+          <button
+            onClick={() => toast.dismiss(t.id)}
+            className="px-3 py-1 bg-gray-300 text-gray-800 rounded"
+          >
+            No
+          </button>
+        </div>
+      </span>
+    ))
   }
 
   const now = new Date()
@@ -37,7 +58,7 @@ function MyBookings() {
   const renderBookingCard = (b) => (
     <div
       key={b._id}
-      className="border rounded-lg p-4 shadow-sm flex gap-4 items-start"
+      className="border rounded-lg p-4 shadow-sm flex gap-4 items-start bg-white dark:bg-gray-800"
     >
       <img
         src={
@@ -51,22 +72,34 @@ function MyBookings() {
       <div className="flex-1">
         <Link
           to={`/homestays/${b.homestay._id}`}
-          className="text-lg font-semibold text-blue-600 hover:underline"
+          className="text-lg font-semibold text-blue-600 dark:text-blue-400 hover:underline"
         >
           {b.homestay.title}
         </Link>
-        <p className="text-sm text-gray-600">{b.homestay.location}</p>
-        <p className="text-sm mt-1">
+
+        <p className="text-sm text-gray-600 dark:text-gray-300">
+          {b.homestay.location}
+        </p>
+        <p className="text-sm mt-1 text-gray-700 dark:text-gray-200">
           🗓 {new Date(b.startDate).toLocaleDateString()} →{' '}
           {new Date(b.endDate).toLocaleDateString()}
         </p>
+
         {new Date(b.endDate) >= now && (
-          <button
-            onClick={() => handleCancel(b._id)}
-            className="mt-2 text-sm text-red-600 underline hover:text-red-800"
-          >
-            Cancel Booking
-          </button>
+          <div className="mt-2 flex flex-wrap gap-4 items-center text-sm">
+            <button
+              onClick={() => handleCancel(b._id)}
+              className="text-red-600 dark:text-red-400 underline hover:text-red-800 dark:hover:text-red-300"
+            >
+              Cancel Booking
+            </button>
+            <Link
+              to={`/chat/${b._id}`}
+              className="text-blue-600 dark:text-blue-400 underline hover:text-blue-800 dark:hover:text-blue-300"
+            >
+              💬 Message Host
+            </Link>
+          </div>
         )}
       </div>
     </div>

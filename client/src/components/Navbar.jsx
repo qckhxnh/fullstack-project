@@ -40,8 +40,8 @@ function Navbar() {
       <Link to="/my-listings" className="hover:text-blue-500">
         My Listings
       </Link>
-      <Link to="/messages" className="hover:text-blue-500">
-        Messages
+      <Link to="/conversations" className="hover:text-blue-500">
+        💬 My Messages
       </Link>
       <button onClick={handleLogout} className="hover:text-red-500">
         Logout

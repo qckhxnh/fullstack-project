@@ -1,31 +1,34 @@
 const Booking = require('../models/Booking')
 const Homestay = require('../models/Homestay')
+const Conversation = require('../models/Conversation')
 
 exports.createBooking = async (req, res) => {
   try {
     const { homestayId, startDate, endDate } = req.body
 
-    const existing = await Booking.find({
-      homestay: homestayId,
-      $or: [
-        {
-          startDate: { $lte: new Date(endDate) },
-          endDate: { $gte: new Date(startDate) },
-        },
-      ],
-    })
-
-    if (existing.length > 0) {
-      return res
-        .status(409)
-        .json({ message: 'Dates conflict with existing bookings' })
-    }
-
+    // Create booking
     const booking = await Booking.create({
-      user: req.user.id,
       homestay: homestayId,
+      user: req.user.id,
       startDate,
       endDate,
+    })
+
+    // Get host from the homestay
+    const homestay = await Homestay.findById(homestayId)
+    const hostId = homestay.owner
+
+    // Create conversation with greeting
+    await Conversation.create({
+      bookingId: booking._id,
+      hostId,
+      renterId: req.user.id,
+      messages: [
+        {
+          senderId: hostId,
+          text: 'Hi! Thanks for booking. Feel free to message me if you have any questions. 😊',
+        },
+      ],
     })
 
     res.status(201).json(booking)
