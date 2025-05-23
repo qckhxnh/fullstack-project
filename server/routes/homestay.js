@@ -9,17 +9,10 @@ const {
   getHomestayById,
   updateHomestay,
   deleteHomestay,
-  getMyListings,
+  getMyHomestays,
 } = require('../controllers/homestayController')
 
-// 👇 Host only
-router.post(
-  '/',
-  auth,
-  roleCheck('host'),
-  upload.array('images', 5),
-  createHomestay
-)
+router.post('/', auth, upload.array('images', 5), createHomestay)
 
 router.put(
   '/:id',
@@ -28,10 +21,10 @@ router.put(
   upload.array('images', 5),
   updateHomestay
 )
-router.delete('/:id', auth, roleCheck('host'), deleteHomestay)
+router.delete('/:id', auth, deleteHomestay)
 
 router.get('/', getAllHomestays)
+router.get('/my', auth, getMyHomestays)
 router.get('/:id', getHomestayById)
-router.get('/my', auth, getMyListings)
 
 module.exports = router

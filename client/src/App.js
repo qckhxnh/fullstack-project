@@ -7,6 +7,7 @@ import RequireAuth from './contexts/RequireAuth'
 import MyBookings from './pages/MyBookings'
 import MyListings from './pages/MyListings'
 import Navbar from './components/Navbar'
+import CreateHomestay from './pages/CreateHomestay'
 
 function App() {
   return (
@@ -16,6 +17,14 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route
+            path="/create-homestay"
+            element={
+              <RequireAuth>
+                <CreateHomestay />
+              </RequireAuth>
+            }
+          />
           <Route
             path="/"
             element={

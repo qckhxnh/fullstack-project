@@ -66,12 +66,6 @@ function MyListings() {
                   ${home.price} / night
                 </p>
                 <div className="mt-2 flex gap-4 text-sm">
-                  <Link
-                    to={`/edit-homestay/${home._id}`}
-                    className="text-green-600 dark:text-green-400 hover:underline"
-                  >
-                    ✏️ Edit
-                  </Link>
                   <button
                     onClick={() => handleDelete(home._id)}
                     className="text-red-600 dark:text-red-400 hover:underline"
