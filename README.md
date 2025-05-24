@@ -141,23 +141,23 @@ npm start
 
 📄 Markdown version also available in [`WORKLOG.md`](./WORKLOG.md)
 
-| Date       | Hours  | Task Description                                                               |
-| ---------- | ------ | ------------------------------------------------------------------------------ |
-| 2025-05-16 | 2      | Project initialization, Git setup, and early README draft                      |
-|            | 5      | Backend setup: Express server, MongoDB, routes, and dotenv configuration       |
-| 2025-05-17 | 6      | User authentication: registration, login, JWT handling, and profile logic      |
-|            | 6      | Homestay model & CRUD operations; route protection and multer integration      |
-| 2025-05-18 | 8      | Booking functionality: create/view endpoints, availability logic, validation   |
-| 2025-05-19 | 8      | Messaging system backend, schema nesting, role checks, and controller setup    |
-| 2025-05-20 | 7      | React frontend: Home, HomestayDetail, dynamic routing, Tailwind UI integration |
-| 2025-05-21 | 10     | Booking frontend flow, RequireAuth, calendar picker, error handling            |
-|            | 8      | Full chat UI implementation, auto-scroll, message send/display                 |
-| 2025-05-22 | 8      | Conversation list page, conversation routing, and access control               |
-|            | 6      | Final UI polish: dark mode, mobile responsiveness, toasts, UX improvements     |
-| 2025-05-23 | 6      | CI/CD workflows, CORS config refactor, production build with `serve`           |
-| 2025-05-24 | 5      | Error state handling, 403/500 debugging, Postman tests                         |
-| 2025-05-24 | 3      | Enhanced README with live links, user guide, installation, and credits section |
-| **Total**  | **88** |                                                                                |
+| Date       | Hours   | Task Description                                                               |
+| ---------- | ------- | ------------------------------------------------------------------------------ |
+| 2025-05-16 | 3       | Project initialization, Git setup, and early README draft                      |
+|            | 10      | Backend setup: Express server, MongoDB, routes, and dotenv configuration       |
+| 2025-05-17 | 10      | User authentication: registration, login, JWT handling, and profile logic      |
+|            | 12      | Homestay model & CRUD operations; route protection and multer integration      |
+| 2025-05-18 | 8       | Booking functionality: create/view endpoints, availability logic, validation   |
+| 2025-05-19 | 12      | Messaging system backend, schema nesting, role checks, and controller setup    |
+| 2025-05-20 | 15      | React frontend: Home, HomestayDetail, dynamic routing, Tailwind UI integration |
+| 2025-05-21 | 10      | Booking frontend flow, RequireAuth, calendar picker, error handling            |
+|            | 13      | Full chat UI implementation, auto-scroll, message send/display                 |
+| 2025-05-22 | 8       | Conversation list page, conversation routing, and access control               |
+|            | 8       | Final UI polish: dark mode, mobile responsiveness, toasts, UX improvements     |
+| 2025-05-23 | 8       | CI/CD pipeline creation with GitHub Actions, deployment to Render, CORS        |
+| 2025-05-24 | 5       | Error state handling, 403/500 debugging, Postman tests                         |
+| 2025-05-24 | 3       | Enhanced README with live links, user guide, installation, and credits section |
+| **Total**  | **125** |                                                                                |
 
 ## 📂 Repository Structure
 
