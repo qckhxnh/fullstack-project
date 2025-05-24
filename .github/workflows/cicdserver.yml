@@ -1,0 +1,45 @@
+name: Deploy Staymate Server Application to Render
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install Dependencies
+        working-directory: ./server
+        run: npm install
+
+      - name: Run Tests
+        working-directory: ./server
+        env:
+          PORT: ${{ secrets.PORT }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          MONGO_URL: ${{ secrets.MONGO_URL }}
+          MONGO_URL_TEST: ${{ secrets.MONGO_URL_TEST }}
+        run: npm run test
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v3
+
+      - name: Deploy to Render
+        env:
+          SERVER_RENDER_API_KEY: ${{ secrets.SERVER_RENDER_API_KEY }}
+          SERVER_SERVICE_ID: ${{ secrets.SERVER_SERVICE_ID }}
+        run: |
+          curl https://api.render.com/deploy/${{secrets.SERVER_SERVICE_ID}}?key=${{secrets.SERVER_RENDER_API_KEY}}
