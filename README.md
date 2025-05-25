@@ -139,7 +139,6 @@ npm start
 
 ## ⏱️ Work Hours Log
 
-📄 Markdown version also available in [`WORKLOG.md`](./WORKLOG.md)
 
 | Date       | Hours   | Task Description                                                               |
 | ---------- | ------- | ------------------------------------------------------------------------------ |
