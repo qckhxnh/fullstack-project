@@ -191,15 +191,4 @@ fullstack-project/
 - Inspired by Airbnb UI
 - Hosted on Render
 
----
 
-_For support or questions, please contact the project maintainer or open an issue._
-
----
-
-Author's Note:
-This project, StayMate, was entirely designed and developed by me as an individual effort. Although GitHub shows another contributor in the commit history, this was an unintentional result of a credential misconfiguration during Git operations.
-
-I am the sole developer responsible for all planning, coding, UI/UX design, testing, and documentation.
-
-The mistakenly attributed contributor (e.g., shubh2294) was never involved in the development of this project.
